@@ -77,13 +77,35 @@ export function AlarmDetail() {
     }
   }, [alarmId, alarms, campaigns, monitors, onboarding, updateOnboarding]);
 
-  if (!alarm || !campaign || !monitor) {
+  if (!alarm) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <LoadingSpinner text="Loading alarm details..." />
+        <Card>
+          <CardContent className="p-12 text-center">
+            <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Alarm Not Found</h2>
+            <p className="text-gray-600 mb-6">
+              The alarm you're looking for doesn't exist or has been removed.
+            </p>
+            <Button onClick={() => navigate('/')}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
+
+  if (!campaign) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <LoadingSpinner text="Loading campaign details..." />
+      </div>
+    );
+  }
+
+  // If monitor is missing, we'll show alarm details but with limited functionality
 
   const severityColors = getSeverityColor(alarm.severity);
 
