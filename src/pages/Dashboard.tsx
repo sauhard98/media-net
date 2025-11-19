@@ -51,10 +51,16 @@ export function Dashboard() {
   });
   const [alarmHistory] = useState(() => generateAlarmHistory());
 
-  // Auto-select first campaign if none selected
+  // Auto-select first campaign if none selected and sync active campaign with latest data
   useEffect(() => {
     if (!activeCampaign && campaigns.length > 0) {
       setActiveCampaign(campaigns[0]);
+    } else if (activeCampaign) {
+      // Update active campaign with latest data from campaigns array
+      const updatedCampaign = campaigns.find(c => c.id === activeCampaign.id);
+      if (updatedCampaign && JSON.stringify(updatedCampaign) !== JSON.stringify(activeCampaign)) {
+        setActiveCampaign(updatedCampaign);
+      }
     }
   }, [campaigns, activeCampaign, setActiveCampaign]);
 

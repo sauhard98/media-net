@@ -238,11 +238,20 @@ export function CreateCampaign() {
     if (!createdCampaignId) return;
 
     // Setup monitoring with preferences
-    await setupMonitoring(createdCampaignId, sensitivity, notificationPrefs);
+    const result = await setupMonitoring(createdCampaignId, sensitivity, notificationPrefs);
 
     // Close modal and navigate to dashboard
     setShowMonitoringModal(false);
-    navigate('/');
+    
+    // Force navigation with state refresh
+    if (result.success) {
+      navigate('/', { replace: true });
+      // Force a page reload to ensure fresh data
+      window.location.href = '/';
+    } else {
+      alert('Failed to setup monitoring. Please try again.');
+      navigate('/');
+    }
   };
 
 
